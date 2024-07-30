@@ -9,6 +9,9 @@ import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 import static io.qameta.allure.Allure.step;
+import static tests.TestData.userAddress;
+import static tests.TestData.userPhone;
+import static tests.TestData.userSubject;
 import static tests.TestData.userSurname;
 
 import com.codeborne.selenide.Configuration;
@@ -74,26 +77,21 @@ public class SelenideTestPageObject extends TestBase {
     step("Открытие формы", () -> {
       registrationPage.openPage();
     });
+
     step("Заполнение формы", () -> {
-      registrationPage.setFirstName(userName);
-      registrationPage.setLastName(userSurname);
-      registrationPage.setEmail(userEmail);
-      $("#userEmail").setValue(TestData.userEmail);
-      $("#genterWrapper").$(byText("Other")).click();
+      registrationPage
+          .setFirstName(userName)
+          .setLastName(userSurname)
+          .setEmail(userEmail)
+          .setGender("Other")
+          .setPhone(userPhone)
+          .setBirthDay()
+          .setSubject(userSubject)
+          .setHobbies("Sports")
+          .setAddress(userAddress)
+          .setPhoto("src/test/resources/devushka-koshka melk.png")
+          .submitButton;
 
-      $("#userNumber").setValue(TestData.userPhone);
-      /*$("#dateOfBirthInput").click();
-      $(".react-datepicker__month-select").selectOption("July");
-      $(".react-datepicker__year-select").selectOption("2008");
-      $(".react-datepicker__week").$(".react-datepicker__day react-datepicker__day--029 react-datepicker__day--weekend react-datepicker__day--outside-month").pressEnter();*/
-      $("#subjectsInput").setValue(TestData.userSubject).pressEnter();
-
-      //driver.findElement(By.xpath("//label[@for='hobbies-checkbox-2']")).click();
-      $("#hobbiesWrapper").$(byText("Sports")).click();
-      $("#currentAddress").setValue(TestData.userAddress);
-
-      $("#uploadPicture").uploadFromClasspath("src/test/resources/devushka-koshka melk.png");
-      $("#submit").click();
     });
     step("Проверка зполнения формы", () -> {
       $(".modal-dialog").should(appear);
