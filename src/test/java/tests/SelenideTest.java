@@ -1,30 +1,23 @@
+package tests;
+
+import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
 
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 import static io.qameta.allure.Allure.step;
-import com.codeborne.selenide.Configuration;
 
 import java.time.Duration;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
-public class SelenideTest {
-
-  @BeforeEach
-  void beforeAll() {
-   // Configuration.baseUrl = "https://demoqa.com";
-    Configuration.browserSize = "1920x1080";
-    //Configuration.holdBrowserOpen = true;
-    //Configuration.browserSize = System.getProperty("browser_size", "1920x1080");
-    //Configuration.timeout = 40000;
-  }
-
+public class SelenideTest extends TestBase {
 
   @Test
   @DisplayName("Elements")
@@ -57,7 +50,7 @@ public class SelenideTest {
     $("#email").shouldHave(text("Email:" + TestData.userEmail));
     $x("//*[contains(text(), 'Current Address :')]").shouldHave(
         text("Current Address :Russia, Moscow, Lenina 105-7"));
-    $x("//*[contains(text(), 'Current Address :')]").shouldHave(
+    $x("//*[contains(text(), 'Permananet Address :')]").shouldHave(
         text("Permananet Address :Russia, Moscow, Lenina 105-7"));
   }
 
@@ -72,34 +65,39 @@ public class SelenideTest {
     $x("//button[text()='Click Me']").click();
     $("#dynamicClickMessage").shouldHave(text("You have done a dynamic click"));
   }
+
   @Test
   @DisplayName("Student Registration Form")
   void registrationPage() {
-    step("Открыть форму регистрации", () -> {
-      open("https://demoqa.com/automation-practice-form");
+    step("Открытие формы", () -> {
+      open("/automation-practice-form");
+      $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
     });
     step("заполнить ФИО, почту, пол", () -> {
       $("#firstName").setValue(TestData.userName);
       $("#lastName").setValue(TestData.userSurname);
       $("#userEmail").setValue(TestData.userEmail);
-      $x("//label[@for = 'gender-radio-3']").click();
+      $("#genterWrapper").$(byText("Other")).click();
     });
     step("заполнить номер телефона, дату рождения и предмет", () -> {
       $("#userNumber").setValue(TestData.userPhone);
-      $("dateOfBirthInput").click();
-      $x("//*[@aria-label = 'Choose Monday, July 22nd, 2024']").click();
-      $("#subjectsInput").setValue(TestData.userSubject);
+      /*$("#dateOfBirthInput").click();
+      $(".react-datepicker__month-select").selectOption("July");
+      $(".react-datepicker__year-select").selectOption("2008");
+      $(".react-datepicker__week").$(".react-datepicker__day react-datepicker__day--029 react-datepicker__day--weekend react-datepicker__day--outside-month").click();*/
+      $("#subjectsInput").setValue(TestData.userSubject).submit();
     });
     step("заполнить [хобби, адрес и штат]", () -> {
       //driver.findElement(By.xpath("//label[@for='hobbies-checkbox-2']")).click();
+      $("#hobbiesWrapper").$(byText("Sports")).click();
       $("#currentAddress").setValue(TestData.userAddress);
     });
     step("отправка фото и формы", () -> {
       $("#uploadPicture").uploadFromClasspath("src/test/resources/devushka-koshka melk.png");
-      $("#submit").submit();
+      $("#submit").click();
     });
     step("Проверка зполнения формы", () -> {
-      $(".modal-header").should(exist);
+      $(".modal-dialog").should(appear);
       $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
     });
   }
