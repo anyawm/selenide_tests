@@ -41,13 +41,13 @@ public class SelenideTest extends TestBase {
   @DisplayName("Text-box")
   void successfulTextBox() {
     open("https://demoqa.com/text-box");
-    $("#userName").setValue(TestData.userFullName);
-    $("#userEmail").setValue(TestData.userEmail);
+    $("#userName").setValue(userFullName);
+    $("#userEmail").setValue(userEmail);
     $("#currentAddress").setValue("Russia, Moscow, Lenina 105-7");
     $("#permanentAddress").setValue("Russia, Moscow, Lenina 105-7");
     $("#submit").click();
-    $("#name").shouldHave(text("Name:" + TestData.userFullName));
-    $("#email").shouldHave(text("Email:" + TestData.userEmail));
+    $("#name").shouldHave(text("Name:" + userFullName));
+    $("#email").shouldHave(text("Email:" + userEmail));
     $x("//*[contains(text(), 'Current Address :')]").shouldHave(
         text("Current Address :Russia, Moscow, Lenina 105-7"));
     $x("//*[contains(text(), 'Permananet Address :')]").shouldHave(
@@ -68,29 +68,29 @@ public class SelenideTest extends TestBase {
 
   @Test
   @DisplayName("Student Registration Form")
-  void registrationPage() {
+  void registrationPage1() {
     step("Открытие формы", () -> {
       open("/automation-practice-form");
       $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
     });
     step("заполнить ФИО, почту, пол", () -> {
-      $("#firstName").setValue(TestData.userName);
-      $("#lastName").setValue(TestData.userSurname);
-      $("#userEmail").setValue(TestData.userEmail);
+      $("#firstName").setValue(userName);
+      $("#lastName").setValue(lastName);
+      $("#userEmail").setValue(userEmail);
       $("#genterWrapper").$(byText("Other")).click();
     });
     step("заполнить номер телефона, дату рождения и предмет", () -> {
-      $("#userNumber").setValue(TestData.userPhone);
+      $("#userNumber").setValue(userNumber);
       /*$("#dateOfBirthInput").click();
       $(".react-datepicker__month-select").selectOption("July");
       $(".react-datepicker__year-select").selectOption("2008");
       $(".react-datepicker__week").$(".react-datepicker__day react-datepicker__day--029 react-datepicker__day--weekend react-datepicker__day--outside-month").click();*/
-      $("#subjectsInput").setValue(TestData.userSubject).submit();
+      $("#subjectsInput").setValue(userSubject).submit();
     });
     step("заполнить [хобби, адрес и штат]", () -> {
       //driver.findElement(By.xpath("//label[@for='hobbies-checkbox-2']")).click();
       $("#hobbiesWrapper").$(byText("Sports")).click();
-      $("#currentAddress").setValue(TestData.userAddress);
+      $("#currentAddress").setValue(currentAddress);
     });
     step("отправка фото и формы", () -> {
       $("#uploadPicture").uploadFromClasspath("src/test/resources/devushka-koshka melk.png");

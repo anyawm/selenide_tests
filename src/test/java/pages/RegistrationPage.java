@@ -1,5 +1,6 @@
 package pages;
 
+import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
@@ -9,13 +10,18 @@ import static com.codeborne.selenide.Selenide.open;
 import com.codeborne.selenide.SelenideElement;
 import com.github.javafaker.Faker;
 import java.util.Locale;
+import net.bytebuddy.dynamic.loading.InjectionClassLoader.Strategy;
+import pages.components.CalendarComponent;
 import pages.components.PictureComponent;
+import pages.components.StateAndCity;
 
 
 public class RegistrationPage {
 
   Faker faker = new Faker(new Locale("fr"));
   PictureComponent pictureComponent = new PictureComponent();
+  CalendarComponent calendarComponent = new CalendarComponent();
+  StateAndCity stateAndCity = new StateAndCity();
 
   private final String titlepage = "Student Registration Form";
   private SelenideElement
@@ -26,8 +32,6 @@ public class RegistrationPage {
   public RegistrationPage openPage() {
     open("/automation-practice-form");
     $(".practice-form-wrapper").shouldHave(text(titlepage));
-    executeJavaScript("$('#fixedban').remove()");
-    executeJavaScript("$('footer').remove()");
 
     return this;
   }
@@ -43,11 +47,13 @@ public class RegistrationPage {
 
     return this;
   }
+
   public RegistrationPage setEmail(String value) {
     emailInput.setValue(value);
 
     return this;
   }
+
   public RegistrationPage setGender(String value) {
     $("#genterWrapper").$(byText(value)).click(); // todo move to Selenide elements
 
@@ -59,6 +65,7 @@ public class RegistrationPage {
 
     return this;
   }
+
   public RegistrationPage setAddress(String value) {
     $("#currentAddress").setValue(value);
 
@@ -70,8 +77,10 @@ public class RegistrationPage {
 
     return this;
   }
-  public RegistrationPage setBirthDay() {
+
+  public RegistrationPage setDateOfBirth(String day, String month, String year) {
     $("#dateOfBirthInput").click();
+    calendarComponent.setDate(day, month, year);
 
     return this;
   }
@@ -88,10 +97,50 @@ public class RegistrationPage {
     return this;
   }
 
+  public RegistrationPage setBirthDay(String day, String month, String year) {
+    $("#dateOfBirthInput").click();
+    calendarComponent.setDate(day, month, year);
+
+    return this;
+  }
+
+  public RegistrationPage setState(String value) {
+    stateAndCity.chooseState(value);
+
+    return this;
+  }
+
+  public RegistrationPage setCity(String value) {
+    stateAndCity.chooseCity(value);
+
+    return this;
+  }
+
   public RegistrationPage submitButton() {
     $("#submit").click();
 
     return this;
   }
+
+  public RegistrationPage checkResult(String key, String value) {
+    $(".table-responsive").$(byText(key)).parent().
+        shouldHave(text(value));
+
+    return this;
+  }
+
+  public RegistrationPage checkModalAppears() {
+    $(".modal-dialog").should(appear);
+    $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
+
+    return this;
+  }
+
+  public RegistrationPage formTitle() {
+    $(".practice-form-wrapper").shouldHave(text(titlepage));
+
+    return this;
+  }
+
 
 }

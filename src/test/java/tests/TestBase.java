@@ -9,12 +9,13 @@ public class TestBase {
 
   RegistrationPage registrationPage = new RegistrationPage();
   Faker faker = new Faker();
-
+  String userFullName = faker.name().fullName();
   String userName = faker.name().firstName();
   String lastName = faker.name().lastName();
   String userEmail = faker.internet().emailAddress();
   String userNumber = faker.phoneNumber().subscriberNumber(10);
   String currentAddress = faker.lebowski().quote();
+  String userSubject = "English";
 
   @BeforeAll
   static void beforeAll() {
