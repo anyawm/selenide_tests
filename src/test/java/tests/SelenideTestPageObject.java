@@ -33,7 +33,7 @@ public class SelenideTestPageObject extends TestBase {
           .submitButton();
 
     });
-    step("Проверка зполнения формы", () -> {
+    step("Проверка заполнения формы", () -> {
       registrationPage
           .checkModalAppears()
           .checkResult("Student Name", userName)
@@ -59,7 +59,7 @@ public class SelenideTestPageObject extends TestBase {
           .submitButton();
 
     });
-    step("Проверка зполнения формы", () -> {
+    step("Проверка заполнения формы", () -> {
       registrationPage
           .checkModalAppears()
           .checkResult("Student Name", userName)
@@ -92,7 +92,7 @@ public class SelenideTestPageObject extends TestBase {
           .submitButton();
 
     });
-    step("Проверка зполнения формы", () -> {
+    step("Проверка заполнения формы", () -> {
       registrationPage.formTitle();
     });
   }
